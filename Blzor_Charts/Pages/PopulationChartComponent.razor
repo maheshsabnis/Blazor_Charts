@@ -1,0 +1,53 @@
+﻿@page "/populationchart"
+@using Blzor_Charts.Models
+@inject IJSRuntime js
+<h3>Population Chart Component</h3>
+
+<div class="container">
+    <table class="table table-bordered table-striped">
+        <tbody>
+            <tr>
+                <td>
+                    <button class="btn btn-success" @onclick="@generateLineChartTask">Line Chart</button>
+                </td>
+                 <td>
+                    <button class="btn btn-danger" @onclick="@generateBarChartTask">Bar Chart</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="population"></div>
+</div>
+
+@code {
+    private PopulationData dataSource;
+    private  List<string> xSource;
+    private  List<int> ySource;
+    private List<object> source; 
+    protected override Task OnInitializedAsync()
+    {
+        dataSource = new PopulationData();
+        xSource = new List<string>();
+        ySource = new List<int>();
+        source = new List<object>();  
+        foreach (var p in dataSource)
+        {
+            xSource.Add(p.State);
+            ySource.Add(p.Count);
+        }
+        source.Add(ySource);
+        source.Add(xSource);
+        return base.OnInitializedAsync();
+    }
+
+    async Task  generateLineChartTask()
+    {
+           // await js.InvokeVoidAsync("alert", line1.ToArray()); // Alert
+       await js.InvokeAsync<object>("populationLineChart", source.ToArray());
+    }
+    async Task  generateBarChartTask()
+    {
+           // await js.InvokeVoidAsync("alert", line1.ToArray()); // Alert
+       await js.InvokeAsync<object>("populationBarChart", source.ToArray());
+    }
+}

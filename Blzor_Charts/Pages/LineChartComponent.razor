@@ -1,0 +1,33 @@
+﻿@page "/linechart"
+@inject IJSRuntime js;
+
+<h2>Line Chart Component using C3.js</h2>
+ 
+<div class="container">
+    <button @onclick="@generateLineChartTask">Draw Line Chart</button>
+    <div id="chart1" class="c1"></div>
+    <br />
+    <button @onclick="@generateBarChartTask">Draw Bar Chart</button>
+     <div id="chart2" class="c1"></div>
+</div>
+
+
+@code { private object[] line1;
+    private object source;
+    protected override Task OnInitializedAsync()
+    {
+        line1 = new object[] { "data1",30, 200, 100, 400, 150, 250 }; 
+        return base.OnInitializedAsync();
+    }
+
+    async Task  generateLineChartTask()
+    {
+           // await js.InvokeVoidAsync("alert", line1.ToArray()); // Alert
+       await js.InvokeAsync<object>("generateLineChart", line1.ToArray());
+    }
+    async Task  generateBarChartTask()
+    {
+           // await js.InvokeVoidAsync("alert", line1.ToArray()); // Alert
+       await js.InvokeAsync<object>("generateBarChart", line1.ToArray());
+    }
+}
